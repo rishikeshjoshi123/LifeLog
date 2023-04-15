@@ -1,9 +1,12 @@
 const express = require('express');
-const mongoose = require('mongoose');
-
 const app = express();
 
-const dbURI = 'mongodb+srv://test_user:1234@cluster0.kedxy.mongodb.net/lifeLog?retryWrites=true&w=majority';
+const appRoutes = require('./routes/appRoutes.js');
+
+const mongoose = require('mongoose');
+
+
+const dbURI = 'mongodb+srv://test_user:TaIhHwdYhvLtRXNO@cluster0.kedxy.mongodb.net/dayLogDB?retryWrites=true&w=majority';
 
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then((res) => {
@@ -11,13 +14,26 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
         app.listen(process.env.PORT || 3000, () => {
             console.log('Nodejs sever just started !');
         })
+
+        // get the current database name
+        const dbName = mongoose.connection.db.databaseName;
+        console.log(`Connected to database: ${dbName}`);
+
+        // get the model names
+        const modelNames = mongoose.modelNames();
+        console.log(`Models registered: ${modelNames}`);
     })
-    .catch(err){
-    console.log(err);
-}
+    .catch((err) => {
+        console.log(err);
+        return;
+    });
 
 
-app.get('/', (req, res) => {
-    res.send('Hello app front page');
-})
+// to read data from payload
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/', appRoutes);
+
+
 
