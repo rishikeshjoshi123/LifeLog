@@ -1,12 +1,15 @@
 const express = require('express');
 const app = express();
 
+// Require dotenv and load environment variables
+require('dotenv').config();
+
+//routes management
 const appRoutes = require('./routes/appRoutes.js');
 
 const mongoose = require('mongoose');
 
-
-const dbURI = 'mongodb+srv://test_user:TaIhHwdYhvLtRXNO@cluster0.kedxy.mongodb.net/dayLogDB?retryWrites=true&w=majority';
+const dbURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.kedxy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then((res) => {
@@ -29,7 +32,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     });
 
 
-// to read data from payload
+// to read data body from incoming payload
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
