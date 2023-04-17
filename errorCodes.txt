@@ -1,0 +1,23 @@
+Some common HTTP status codes:
+
+200 OK: The request was successful and the response contains the requested data.
+
+201 Created: The request was successful, a new resource has been created, and the URI of the new resource is included in the response.
+
+204 No Content:
+ The request was successful but there is no content to send back (e.g. after a successful DELETE request).
+
+400 Bad Request:
+ The request was invalid or could not be understood by the server.
+
+401 Unauthorized:
+ The request requires authentication or the user is not authorized to access the requested resource.
+
+403 Forbidden:
+ The user is authenticated but does not have the necessary permissions to access the requested resource.
+
+404 Not Found:
+ The requested resource could not be found on the server.
+
+500 Internal Server Error:
+ A generic error message indicating that something went wrong on the server while processing the request.

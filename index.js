@@ -1,3 +1,6 @@
+
+const cookieParser = require('cookie-parser');
+const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 
@@ -6,8 +9,9 @@ require('dotenv').config();
 
 //routes management
 const appRoutes = require('./routes/appRoutes.js');
+const authRoutes = require('./routes/authRoutes.js');
 
-const mongoose = require('mongoose');
+
 
 const dbURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.kedxy.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
@@ -17,14 +21,6 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
         app.listen(process.env.PORT || 3000, () => {
             console.log('Nodejs sever just started !');
         })
-
-        // get the current database name
-        const dbName = mongoose.connection.db.databaseName;
-        console.log(`Connected to database: ${dbName}`);
-
-        // get the model names
-        const modelNames = mongoose.modelNames();
-        console.log(`Models registered: ${modelNames}`);
     })
     .catch((err) => {
         console.log(err);
@@ -35,7 +31,11 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 // to read data body from incoming payload
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+//enable cookie parser
+app.use(cookieParser());
 
+//routes
+app.use(authRoutes);
 app.use('/', appRoutes);
 
 

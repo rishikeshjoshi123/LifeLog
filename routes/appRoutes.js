@@ -3,12 +3,13 @@ const router = express.Router();
 
 const db = require('../model/appData.js');
 
+//auth middleware
+const { auth } = require('../middleware/authMiddleware.js');
 
-router.get('/', async (req, res) => {
 
+router.get('/', auth, async (req, res) => {
     try {
         const data = await db.find();
-
         res.json(data);
     }
     catch (err) {
