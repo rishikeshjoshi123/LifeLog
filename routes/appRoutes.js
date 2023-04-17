@@ -18,9 +18,7 @@ router.get('/', auth, async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-
     try {
-
         const newData = new db(req.body);
         const savedData = await newData.save();
         res.json(savedData);
@@ -31,7 +29,6 @@ router.post('/', async (req, res) => {
 })
 
 router.put('/:id', async (req, res) => {
-
     try {
         const updatedData = await db.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
         res.json(updatedData);
