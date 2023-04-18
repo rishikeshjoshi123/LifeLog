@@ -6,25 +6,23 @@ const auth = async (req, res, next) => {
 
     try {
         if (jwtToken) {
-            let userId = null;
-            jwt.verify(jwtToken, process.env.JWT_SECRET, (err, decodedToken) => {
+
+            jwt.verify(jwtToken, process.env.JWT_SECRET, async (err, decodedToken) => {
                 if (err) {
                     console.log('JWT verification failed. The key is invalid. [Moving forward as of now]');
+                    res.locals.user = null;
                     //From here redirect to the login page
                 }
                 else {
-                    userId = decodedToken.userId;
+                    const user = User.findById(decodedToken.userId);
+                    //'user' object of 'res.locals.user' can be used later after the next() is called.
+                    res.locals.user = user;
+
                     console.log('JWT verification successful. The decoded key is ', decodedToken);
                     // next() from here...
                 }
-
             })
-            //'user' object of 'res.locals.user' can be used later after the next() is called.
-            if (userId) {
-                const user = await User.findById(userId);
-                res.locals.user = user;
-            }
-            else console.log('userId is null', userId);
+
         }
         else {
             console.log('The JWT token doesnt exist! [Moving forwared as of now]');
