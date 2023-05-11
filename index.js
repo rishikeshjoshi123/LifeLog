@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 // Require dotenv and load environment variables
 require('dotenv').config();
@@ -18,8 +19,10 @@ const dbURI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@clust
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then((res) => {
         console.log('Connected to mongoDB database');
-        app.listen(process.env.PORT || 3000, () => {
+        const port = process.env.PORT || 3000;
+        app.listen(port, () => {
             console.log('Nodejs sever just started !');
+            console.log('Listening in port :', port);
         })
     })
     .catch((err) => {
@@ -28,6 +31,8 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     });
 
 
+//to allow all origins to access your API
+app.use(cors());
 // to read data body from incoming payload
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

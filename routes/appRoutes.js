@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const db = require('../model/appData.js');
+const db = require('../model/app.js');
 
 //auth middleware
 const { auth } = require('../middleware/authMiddleware.js');

@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../model/user.js');
 
 
-module.exports.signup_post = async (req, res) => {
+module.exports.signup = async (req, res) => {
 
     const { email, password } = req.body;
     try {
@@ -21,7 +21,7 @@ module.exports.signup_post = async (req, res) => {
         res.status(400).json(error);
     }
 }
-module.exports.login_post = async (req, res) => {
+module.exports.login = async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.login(email, password);
@@ -37,6 +37,9 @@ module.exports.login_post = async (req, res) => {
         res.status(400).json(error);
     }
 };
+module.exports.logout = async (req, res) => {
+    res.clearCookie('jwt').sendStatus(200);
+}
 
 
 function createJWTtoken(userId) {
